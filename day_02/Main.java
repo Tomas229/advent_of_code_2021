@@ -32,7 +32,7 @@ class Main {
     System.out.println(x * y);
 
     x = 0;
-    y = 1;
+    y = 0;
     int aim = 0;
 
     for (int i = 0; i < content.size(); i++) {
@@ -42,13 +42,14 @@ class Main {
       String direction = data.substring(0, data.length() - 1);
       if (direction.equals("forward ")) {
         x = x + value;
+        y = y + aim * value;
       }
       if (direction.equals("down ")) {
-        y = y + value;
+        aim = aim + value;
 
       }
       if (direction.equals("up ")) {
-        y = y - value;
+        aim = aim - value;
       }
     }
     System.out.println(x * y);
