@@ -28,7 +28,7 @@ class Main {
       for (int j = 0; j < bingo.size(); j++) {
         if (!bingo.get(j).is_done()) {
           if (bingo.get(j).add_number(Integer.parseInt(numbers[i]))) {
-            return;
+            //return;
           }
         }
       }
