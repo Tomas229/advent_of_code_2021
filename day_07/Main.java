@@ -69,7 +69,8 @@ class CrabGroup {
   }
 
   public int goTo(int position) {
-    return Math.abs(this.position - position) * this.quantity;
+    int distance = Math.abs(this.position - position);
+    return ((distance * (distance + 1))/2) * this.quantity;
   }
 
   public String toString(){
