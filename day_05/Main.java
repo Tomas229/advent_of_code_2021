@@ -23,7 +23,7 @@ class Main {
       Point p1 = new Point(x1, y1);
       Point p2 = new Point(x2, y2);
 
-      if (p1.is_hor_or_ver(p2)) {
+      if (p1.is_hor_or_ver(p2) || true) {
         List<Point> r = p1.road(p2);
 
         List<Point> auxMap = new ArrayList<Point>();
@@ -46,12 +46,12 @@ class Main {
           }
 
         }
-         map.addAll(auxMap);
+        map.addAll(auxMap);
         frec.addAll(auxFrec);
       }
     }
-    //System.out.println(frec);
-    //System.out.println(map);
+    // System.out.println(frec);
+    // System.out.println(map);
     frec.removeIf(s -> (s < 2));
     System.out.println(frec.size());
     // System.out.println(frec);
@@ -78,18 +78,15 @@ class Point {
   public List<Point> road(Point p) {
     List<Point> r = new ArrayList<Point>();
     r.add(this);
-    if (this.x == p.x) {
-      int aux = Math.abs(this.y - p.y);
-      for (int i = 0; i < aux; i++) {
-        r.add(new Point(this.x, Math.min(this.y, p.y) + i + 1));
-      }
+    int dx = Math.abs(p.x - this.x);
+    int dy = Math.abs(p.y - this.y); // pene
+    int vx = (p.x - this.x) / (Math.max(dx, 1));
+    int vy = (p.y - this.y) / (Math.max(dy, 1));
+
+    for (int i = 0; i < Math.max(dx, dy); i++) {
+      r.add(new Point(this.x + (i + 1) * vx, this.y + (i + 1) * vy));
     }
-    if (this.y == p.y) {
-      int aux = Math.abs(this.x - p.x);
-      for (int i = 0; i < aux; i++) {
-        r.add(new Point(Math.min(this.x, p.x) + i + 1, this.y));
-      }
-    }
+
     r.add(p);
     return r;
   }
