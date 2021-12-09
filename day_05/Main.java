@@ -26,6 +26,9 @@ class Main {
       if (p1.is_hor_or_ver(p2)) {
         List<Point> r = p1.road(p2);
 
+        List<Point> auxMap = new ArrayList<Point>();
+        List<Integer> auxFrec = new ArrayList<Integer>();
+
         for (int i = 0; i < r.size(); i++) {
           boolean new_p = true;
           Point p = r.get(i);
@@ -34,19 +37,21 @@ class Main {
               int aux = frec.get(j) + 1;
               frec.set(j, aux);
               new_p = false;
-              break; // cambiar
+              break;
             }
           }
           if (new_p) {
-            map.add(p);
-            frec.add(1);
+            auxMap.add(p);
+            auxFrec.add(1);
           }
 
         }
+         map.addAll(auxMap);
+        frec.addAll(auxFrec);
       }
     }
-    System.out.println(frec);
-    System.out.println(map);
+    //System.out.println(frec);
+    //System.out.println(map);
     frec.removeIf(s -> (s < 2));
     System.out.println(frec.size());
     // System.out.println(frec);
