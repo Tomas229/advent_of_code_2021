@@ -10,7 +10,7 @@ class Main {
     ArrayList<ArrayList<Integer>> input = Main.getIntMatrixList();
 
     Main.printFirstStarSolution(input);
-    // Main.printSecondStarSolution(input);
+    Main.printSecondStarSolution(input);
   }
 
   public static int[] getOneLineInputIntArray() throws IOException {
@@ -135,8 +135,48 @@ class Main {
     System.out.println("1st Star: " + Integer.toString(sum));
   }
 
-  public static void printSecondStarSolution(int[] init) {
+  public static void printSecondStarSolution(ArrayList<ArrayList<Integer>> init) {
+    ArrayList<ArrayList<DumboOctopus>> matrix = new ArrayList<ArrayList<DumboOctopus>>();
+    for (int i = 0; i < init.size(); i++) {
+      ArrayList<DumboOctopus> row = new ArrayList<DumboOctopus>();
+      for (int j = 0; j < init.get(i).size(); j++) {
+        row.add(new DumboOctopus(i, j, init.get(i).get(j), matrix));
+      }
+      matrix.add(row);
+    }
 
+    int z = 0;
+    while (true) {
+      z = z + 1;
+
+      int brightness = 0;
+
+      for (ArrayList<DumboOctopus> row : matrix) {
+        for (DumboOctopus octopus : row) {
+          octopus.readyStep();
+        }
+      }
+      for (ArrayList<DumboOctopus> row : matrix) {
+        for (DumboOctopus octopus : row) {
+          octopus.takeStep();
+        }
+      }
+      for (ArrayList<DumboOctopus> row : matrix) {
+        for (DumboOctopus octopus : row) {
+          brightness = brightness + octopus.getEnergyLevel();
+        }
+      }
+      if (brightness == 0) {
+        System.out.println("2nd Star: " + Integer.toString(z));
+        break;
+      }
+    }
+    int sum = 0;
+    for (ArrayList<DumboOctopus> row : matrix) {
+      for (DumboOctopus octopus : row) {
+        sum = sum + octopus.flashes;
+      }
+    }
   }
 }
 
@@ -182,6 +222,10 @@ class DumboOctopus {
 
   public void takeStep() {
     this.increaseEnergyLevel();
+  }
+
+  public int getEnergyLevel() {
+    return this.energyLevel;
   }
 
   public String toString() {
