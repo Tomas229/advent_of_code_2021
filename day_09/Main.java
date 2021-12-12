@@ -9,8 +9,7 @@ class Main {
   public static void main(String[] args) throws IOException {
     ArrayList<ArrayList<Integer>> input = Main.getIntMatrixList();
 
-    Main.printFirstStarSolution(input);
-    // Main.printSecondStarSolution(input);
+    Main.printSecondStarSolution(Main.printFirstStarSolution(input), input);
   }
 
   public static int[] getOneLineInputIntArray() throws IOException {
@@ -65,7 +64,10 @@ class Main {
     return indexes;
   }
 
-  public static void printFirstStarSolution(ArrayList<ArrayList<Integer>> init) {
+  public static ArrayList<int[]> printFirstStarSolution(ArrayList<ArrayList<Integer>> init) {
+
+    ArrayList<int[]> lowIndexes = new ArrayList<int[]>();
+
     int sum = 0;
     for (int i = 0; i < init.size(); i++) {
       for (int j = 0; j < init.get(i).size(); j++) {
@@ -79,12 +81,47 @@ class Main {
 
         if (low) {
           sum = sum + 1 + init.get(i).get(j);
+          int[] pair = { i, j };
+          lowIndexes.add(pair);
         }
       }
     }
     System.out.println(sum);
+    return lowIndexes;
   }
 
-  public static void printSecondStarSolution(int[] init) {
+  public static void printSecondStarSolution(ArrayList<int[]> lowPoints, ArrayList<ArrayList<Integer>> map) {
+    ArrayList<Integer> basinSizes = new ArrayList<Integer>();
+
+    for (int[] low : lowPoints) {
+      basinSizes.add(Main.basinSize(low[0], low[1], map));
+    }
+    Collections.sort(basinSizes);
+    System.out.println(basinSizes.get(basinSizes.size() - 1) * basinSizes.get(basinSizes.size() - 2)
+        * basinSizes.get(basinSizes.size() - 3));
+  }
+
+  public static int basinSize(int x, int y, ArrayList<ArrayList<Integer>> map) {
+    ArrayList<int[]> basinList = new ArrayList<int[]>();
+    int[] initial = { x, y };
+    basinList.add(initial);
+
+    for (int i = 0; i < basinList.size(); i++) {
+      ArrayList<int[]> indexes = Main.getAdyacentIndexes(basinList.get(i)[0], basinList.get(i)[1], map.size(),
+          map.get(0).size());
+      for (int[] ind : indexes) {
+        if (map.get(ind[0]).get(ind[1]) != 9 && ! Main.isInList(basinList, ind)) {
+          basinList.add(ind);
+        }
+      }
+    }
+
+    return basinList.size();
+  }
+
+  public static boolean isInList(final List<int[]> list, final int[] candidate) {
+
+    return list.stream().anyMatch(a -> Arrays.equals(a, candidate));
+    // ^-- or you may want to use .parallelStream() here instead
   }
 }
