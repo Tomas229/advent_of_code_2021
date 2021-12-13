@@ -16,7 +16,7 @@ class Main {
     inputFolds.remove(0);
 
     Main.printFirstStarSolution(inputPoints, inputFolds);
-    // Main.printSecondStarSolution(input);
+    Main.printSecondStarSolution(inputPoints, inputFolds);
   }
 
   public static void printFirstStarSolution(List<String> points, List<String> folds) {
@@ -53,7 +53,53 @@ class Main {
     System.out.println("1st star: " + Integer.toString(newPoints.size()));
   }
 
-  public static void printSecondStarSolution(ArrayList<ArrayList<Integer>> init) {
+  public static void printSecondStarSolution(List<String> points, List<String> folds) {
 
+    for (String fold : folds) {
+      String[] f = fold.substring(11).split("=");
+      String axis = f[0];
+      int value = Integer.parseInt(f[1]);
+
+      List<String> newPoints = new ArrayList<String>();
+
+      for (String p : points) {
+        int x = Integer.parseInt(p.split(",")[0]);
+        int y = Integer.parseInt(p.split(",")[1]);
+
+        if (axis.equals("x")) {
+          if (x < value) {
+            newPoints.add(p);
+          } else {
+            int dx = Math.abs(value - x);
+            x = value - dx;
+            newPoints.add(Integer.toString(x) + "," + Integer.toString(y));
+          }
+
+        } else if (axis.equals("y")) {
+          if (y < value) {
+            newPoints.add(p);
+          } else {
+            int dy = Math.abs(value - y);
+            y = value - dy;
+            newPoints.add(Integer.toString(x) + "," + Integer.toString(y));
+          }
+        }
+      }
+      points = newPoints.stream().distinct().collect(Collectors.toList());
+    }
+
+    String finalString = "";
+    for (int i = 0; i <40; i++) {
+      for (int j = 0; j < 7; j++) {
+        if (points.contains(Integer.toString(i) + "," + Integer.toString(j))) {
+          finalString = finalString +"#";
+        } else {
+          finalString = finalString +".";
+        }
+      }
+      finalString = finalString +"\n";
+    }
+    System.out.println(finalString);
   }
+
 }
