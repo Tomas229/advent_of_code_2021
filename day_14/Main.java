@@ -42,7 +42,12 @@ class Main {
   }
 
   public static void printSecondStarSolution(Polymer protein) {
-   
+    for (int h = 0; h < 30; h++) {
+      protein.takeStep();
+    }
+    System.out.print("2nd Star: ");
+    System.out.println(protein.getFrecuencyOfMostCommon() - protein.getFrecuencyOfLeastCommon());
+
   }
 
 }
