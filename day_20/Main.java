@@ -48,6 +48,15 @@ class Main {
   }
 
   public static void printSecondStarSolution(List<String> image, String imageString) {
+    for (int i = 0; i < 50; i++) {
+      image = Main.takeStepOnImage(image, imageString);
+    }
+    int count = 0;
+    for (String s : image) {
+      count = count + s.split("#", -1).length - 1;
+    }
+    System.out.print("2nd Star: ");
+    System.out.println(count);
   }
 
   public static int getIndexFromCoords(int x, int y, List<String> image) {
